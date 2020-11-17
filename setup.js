@@ -5,9 +5,9 @@ function preload() {
     this.centerX = game.config.width/2;
     this.centerY = game.config.height/2;
     this.load.image('button', 'assets/button.png');
-    for (let i = 1; i < 7; i++) {
-        this.load.image(`${i}`, `assets/${i}.png`);
-    }
+    // for (let i = 1; i < 7; i++) {
+    //     this.load.image(`${i}`, `assets/${i}.png`);
+    // }
 
     ProgressBar = this.add.graphics();
     ProgressBox = this.add.graphics();
@@ -20,15 +20,19 @@ function create() {
     image.setName('button');
     this.text = this.add.text(300, 200, Counter);
 
-    for (let i = 1; i < 7; i++) {
-        this.load.image(`${i}`, `assets/${i}.png`);
-        let currentTab = this.add.sprite(120, (i - 1)*125+60, `${i}`);
-        currentTab.setName(i);
-        currentTab.setInteractive();
-    }
+    // for (let i = 1; i < 7; i++) {
+    //     this.load.image(`${i}`, `assets/${i}.png`);
+    //     let currentTab = this.add.sprite(120, (i - 1)*125+60, `${i}`);
+    //     currentTab.setName(i);
+    //     currentTab.setInteractive();
+    // }
 
     image.setInteractive();
     this.input.on('gameobjectdown', listener);
+
+    var myText = new Phaser.GameObjects.Text(this, 100, 100, "HELLO");
+    this.add.text(100, 100, myText.text);
+    this.InventoryText = this.add.text(this.centerX * 1.8, this.centerY * 0.1, Inventory);
 }
 
 var config = {
