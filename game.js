@@ -1,21 +1,39 @@
 function update() {
-    this.InventoryText = this.InventoryText.setText(Inventory);
+    let prettyInventoryText = "";
+    Object.entries(Inventory).map(([key, value]) => {
+        prettyInventoryText += `${Inventory[key]['name']} - x${Inventory[key]['qty']}\n`;
+    });
+    this.InventoryText = this.InventoryText.setText(prettyInventoryText);
 }
 
 function listener (pointer, gameObject) {
-    // console.log(`You clicked on ${JSON.stringify(gameObject,null,2)}`);
-
-    // Inventory += `${1}\n`;
+    // Get random resource to add to inventory
     let randomType = Math.floor(Math.random() * planetTypeData.length);
     let randomResourceNumber = Math.floor(Math.random() * planetTypeData[randomType]['resources'].length);
     let resourceName = planetTypeData[randomType]['resources'][randomResourceNumber];
-    console.log(randomType);
-    console.log(randomResourceNumber);
-    console.log(resourceName);
-    Inventory += `${resourceName}\n`;
-    //let resource = CurrentPlanet.resources[0];
-    //console.log(resource);
-    //Inventory[resource].Quantity += 1;
+
+    // Check if inventory contains that resource
+    console.log(`Found ${resourceName}`);
+    let newResourceAdded = false;
+    Object.entries(Inventory).map(([key, value]) => {
+        if (Inventory[key]['name'] == resourceName) {
+            console.log("GOT EM");
+            Inventory[key]['qty'] += 1;
+            newResourceAdded = true;
+        }
+    });
+
+    // If resource has not been added yet, create a new entry in the inventory.
+    if (!newResourceAdded) {
+        let newResource = {
+            name: resourceName,
+            qty: 0
+        }
+        Inventory.push(newResource);
+    }
+
+    console.log(JSON.stringify(Inventory, null, 2));
+
     gameObject.angle += 10;
 
 }

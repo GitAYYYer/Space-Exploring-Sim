@@ -23,7 +23,7 @@ function create() {
 
     var myText = new Phaser.GameObjects.Text(this, 100, 100, "HELLO");
     this.add.text(100, 100, myText.text);
-    this.InventoryText = this.add.text(this.centerX * 1.8, this.centerY * 0.1, Inventory);
+    this.InventoryText = this.add.text(this.centerX * 1.5, this.centerY * 0.1, Inventory);
 }
 
 var config = {
