@@ -5,20 +5,11 @@ function preload() {
     this.centerX = game.config.width/2;
     this.centerY = game.config.height/2;
     this.load.image('button', 'assets/button.png');
-    // for (let i = 1; i < 7; i++) {
-    //     this.load.image(`${i}`, `assets/${i}.png`);
-    // }
-
-    ProgressBar = this.add.graphics();
-    ProgressBox = this.add.graphics();
-    ProgressBar.fillStyle(0xffffff, 0.5);
-    ProgressBox.fillRect(240, 270, 400, 50);
 }
 
 function create() {
     var image = this.add.sprite(this.centerX, this.centerY, 'button');
     image.setName('button');
-    this.text = this.add.text(300, 200, Counter);
 
     // for (let i = 1; i < 7; i++) {
     //     this.load.image(`${i}`, `assets/${i}.png`);
