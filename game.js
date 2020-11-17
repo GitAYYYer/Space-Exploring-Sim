@@ -7,20 +7,12 @@ function listener (pointer, gameObject) {
 
     if (ClickReady && gameObject.name == 'button') {
         Counter++;
+        let resource = CurrentPlanet.resources[0];
+        console.log(resource);
+        //Inventory[resource].Quantity += 1;
         gameObject.angle += 10;
-
-        ClickReady = false;
         var progress = 0;
-        var myVar = setInterval(function () {
-            ProgressBar.fillRect(250, 280, progress, 30);
-            progress += 1;
 
-            if (progress == 380) {
-                clearInterval(myVar);
-                ProgressBar.clear();
-                ClickReady = true;
-            }
-        }, 10)
     }
 }
 
