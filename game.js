@@ -9,6 +9,9 @@ function listener (pointer, gameObject) {
     if (ClickReady && gameObject.name == 'button') {
         Counter++;
         Inventory += `${Counter}\n`;
+        //let resource = CurrentPlanet.resources[0];
+        //console.log(resource);
+        //Inventory[resource].Quantity += 1;
         gameObject.angle += 10;
 
     }
