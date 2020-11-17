@@ -21,9 +21,22 @@ function create() {
     image.setInteractive();
     this.input.on('gameobjectdown', listener);
 
-    var myText = new Phaser.GameObjects.Text(this, 100, 100, "HELLO");
+    var myText = new Phaser.GameObjects.Text(this, 100, 100, 'HELLO');
     this.add.text(100, 100, myText.text);
     this.InventoryText = this.add.text(this.centerX * 1.5, this.centerY * 0.1, Inventory);
+    this.SystemText = this.add.text(this.centerX * 0.9, this.centerY * 0.1, CurrentSolarSystemName);
+    this.PlanetsText = this.add.text(this.centerX * 1.2, this.centerY * 0.1, OrbitingPlanets);
+
+    //setting this solar system to milky way
+    CurrentSolarSystemName = 'Milky Way';
+    for (var value of SolarSystemData) {
+        if (CurrentSolarSystemName === value.name) {
+            console.log("true");
+            Object.entries(value.planets).map(([key, value]) => {
+                OrbitingPlanets.push(value);
+            });
+        }
+    }
 }
 
 var config = {

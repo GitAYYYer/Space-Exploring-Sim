@@ -18,6 +18,7 @@
   "homepage": "https://github.com/GitAYYYer/Space-Exploring-Sim#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "phaser": "^3.24.1"
+    "phaser": "^3.24.1",
+    "random-seed": "^0.3.0"
   }
 }
