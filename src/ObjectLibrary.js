@@ -6,12 +6,20 @@ const ResourceData = [
 ];
 
 //Add resource drop rate here?
-const PlanetTypeData = [
-    {'type': 'Lush',      'resources': ['Wood', 'Oxygen']                    },
-    {'type': 'Fiery',     'resources': ['Iron']                              },
-    {'type': 'Frozen',    'resources': ['Ice']                               },
-    {'type': 'Gaseous',   'resources': ['Hydrogen', 'Helium']                }
-];
+const PlanetTypeData = {
+    Lush: {
+        resources: ['Wood', 'Oxygen']
+    },
+    Fiery: {
+        resources: ['Iron']  
+    },
+    Frozen: {
+        resources: ['Ice']  
+    },
+    Gaseous: {
+        resources: ['Hydrogen', 'Helium']  
+    }
+}
 
 const ShipUpgradeData = [
     {'name': 'Warp Range',      'dependencies': []               },
@@ -25,14 +33,41 @@ const SolarSystemData = [
     {'name': 'Milky Way',       'planets': ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']               }
 ];
 
-const PlanetData = [
-    {'name': 'Mercury',       'type': 'Fiery'           },
-    {'name': 'Venus',         'type': 'Fiery'           },
-    {'name': 'Earth',         'type': 'Lush'            },
-    {'name': 'Mars',          'type': 'Fiery'           },
-    {'name': 'Jupiter',       'type': 'Gaseous'         },
-    {'name': 'Saturn',        'type': 'Lush'            },
-    {'name': 'Uranus',        'type': 'Frozen'          },
-    {'name': 'Neptune',       'type': 'Frozen'          },
-    {'name': 'Pluto',         'type': 'Frozen'          }
-];
+const PlanetData = {
+    'Mercury': {
+        name: 'Mercury',
+        type: 'Fiery'
+    },
+    'Earth': {
+        name: 'Earth',
+        type: 'Lush'
+    },
+    'Venus': {
+        name: 'Venus',
+        type: 'Fiery'
+    },
+    'Mars': {
+        name: 'Mars',
+        type: 'Fiery'
+    },
+    'Jupiter': {
+        name: 'Jupiter',
+        type: 'Gaseous'
+    },
+    'Saturn': {
+        name: 'Saturn',
+        type: 'Lush'
+    },
+    'Uranus': {
+        name: 'Uranus',
+        type: 'Frozen'
+    },
+    'Neptune': {
+        name: 'Neptune',
+        type: 'Frozen'
+    },
+    'Pluto': {
+        name: 'Pluto',
+        type: 'Frozen'
+    }
+}
