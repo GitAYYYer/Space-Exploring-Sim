@@ -12,17 +12,20 @@ class MainScene extends Phaser.Scene {
 
         let i = 0;
         for (const planet of OrbitingPlanets) {
-            console.log(planet);
-            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, (this.game.config.height  * 0.1) + i, planet, {fill: '#0f0'}, () => console.log(planet));
+            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, this.game.config.height  * 0.1 + i, planet, {fill: '#0f0'}, () => this.planetSelected(planet));
             this.add.existing(this.incrementButton);
             i += 15;
         }
 
-        this.gatherResourceButton = new TextButton(this, 100, 150, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
+        this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height  * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
 
-        this.InventoryText = this.add.text(this.game.config.width * .75, (this.game.config.height  * 0.1), Inventory);
-        console.log(this.game.config.width);
+        this.currentPlanetText = this.add.text( this.game.config.width * .3, this.game.config.height  * 0.1, "CurrentPlanet");
+        this.add.existing(this.gatherResourceButton);
+
+        this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height  * 0.1, Inventory);
+
+        this.currentPlanetText = this.currentPlanetText.setText('Earth');
     }
 
     initialiseSolarSystem() {
@@ -30,30 +33,32 @@ class MainScene extends Phaser.Scene {
         CurrentSolarSystemName = 'Milky Way';
         for (var value of SolarSystemData) {
             if (CurrentSolarSystemName === value.name) {
-                console.log("true");
                 Object.entries(value.planets).map(([key, value]) => {
                     OrbitingPlanets.push(value);
                 });
             }
         }
+
+        CurrentPlanet = PlanetData['Earth'];
     }
 
     planetSelected(planetName) {
-        console.log("You selected: " + planetName);
+        CurrentPlanet = PlanetData[planetName];
+
+        this.currentPlanetText = this.currentPlanetText.setText(planetName);
     }
 
-    gatherResource() {
-        // Get random resource to add to inventory
-        let randomType = Math.floor(Math.random() * PlanetTypeData.length);
-        let randomResourceNumber = Math.floor(Math.random() * PlanetTypeData[randomType]['resources'].length);
-        let resourceName = PlanetTypeData[randomType]['resources'][randomResourceNumber];
+    async gatherResource() {
+        let planet = CurrentPlanet;
+
+        let resourceName;
+        let randomResourceNumber = Math.floor(Math.random() * PlanetTypeData[planet.type]['resources'].length);
+        resourceName = PlanetTypeData[planet.type]['resources'][randomResourceNumber];
 
         // Check if inventory contains that resource
-        console.log(`Found ${resourceName}`);
         let newResourceAdded = false;
         Object.entries(Inventory).map(([key, value]) => {
             if (Inventory[key]['name'] == resourceName) {
-                console.log("GOT EM");
                 Inventory[key]['qty'] += 1;
                 newResourceAdded = true;
             }
@@ -68,8 +73,6 @@ class MainScene extends Phaser.Scene {
             Inventory.push(newResource);
         }
 
-        console.log(JSON.stringify(Inventory, null, 2));
-
         //Inventory UI
         let prettyInventoryText = "";
         Object.entries(Inventory).map(([key, value]) => {
@@ -77,7 +80,7 @@ class MainScene extends Phaser.Scene {
         });
         this.InventoryText = this.InventoryText.setText(prettyInventoryText);
     }
-
+    
     update() {
     }
 }
