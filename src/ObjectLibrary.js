@@ -76,22 +76,17 @@ const ShipUpgradeData = {
     'Warp Range': {
         name: 'Warp Range',
         dependencies: [],
-        maxLevel: 99
+        maxLevel: 1
     },
     'Shields': {
-        name: 'Warp Range',
+        name: 'Shields',
         dependencies: [],
-        maxLevel: 99
+        maxLevel: 5
     },
     'Speed 1': {
-        name: 'Warp Range',
+        name: 'Speed 1',
         dependencies: [],
-        maxLevel: 99
-    },
-    'Speed 2': {
-        name: 'Warp Range',
-        dependencies: [],
-        maxLevel: 99
-    },
+        maxLevel: 5
+    }
     
 }

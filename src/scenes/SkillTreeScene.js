@@ -11,5 +11,7 @@ class SkillTreeScene extends Phaser.Scene {
 
     }
 
-    
+    update() {
+        
+    }
 }
