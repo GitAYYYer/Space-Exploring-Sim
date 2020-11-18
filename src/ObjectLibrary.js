@@ -71,3 +71,27 @@ const PlanetData = {
         type: 'Frozen'
     }
 }
+
+const ShipUpgradeData = {
+    'Warp Range': {
+        name: 'Warp Range',
+        dependencies: [],
+        maxLevel: 99
+    },
+    'Shields': {
+        name: 'Warp Range',
+        dependencies: [],
+        maxLevel: 99
+    },
+    'Speed 1': {
+        name: 'Warp Range',
+        dependencies: [],
+        maxLevel: 99
+    },
+    'Speed 2': {
+        name: 'Warp Range',
+        dependencies: [],
+        maxLevel: 99
+    },
+    
+}
