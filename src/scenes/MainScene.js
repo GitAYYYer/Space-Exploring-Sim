@@ -13,16 +13,21 @@ class MainScene extends Phaser.Scene {
         let i = 0;
         for (const planet of OrbitingPlanets) {
             console.log(planet);
-            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, (this.game.config.height  * 0.1) + i, planet, {fill: '#0f0'}, () => console.log(planet));
+            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, this.game.config.height  * 0.1 + i, planet, {fill: '#0f0'}, () => this.planetSelected(planet));
             this.add.existing(this.incrementButton);
             i += 15;
         }
 
-        this.gatherResourceButton = new TextButton(this, 100, 150, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
+        this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height  * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
 
-        this.InventoryText = this.add.text(this.game.config.width * .75, (this.game.config.height  * 0.1), Inventory);
+        this.currentPlanetText = this.add.text( this.game.config.width * .3, this.game.config.height  * 0.1, "CurrentPlanet");
+        this.add.existing(this.gatherResourceButton);
+
+        this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height  * 0.1, Inventory);
         console.log(this.game.config.width);
+
+        this.currentPlanetText = this.currentPlanetText.setText('Earth');
     }
 
     initialiseSolarSystem() {
@@ -36,17 +41,54 @@ class MainScene extends Phaser.Scene {
                 });
             }
         }
+
+        CurrentPlanet = 'Earth';
     }
 
     planetSelected(planetName) {
         console.log("You selected: " + planetName);
+        CurrentPlanet = PlanetData[planetName];
+
+        this.currentPlanetText = this.currentPlanetText.setText(planetName);
     }
 
     gatherResource() {
         // Get random resource to add to inventory
-        let randomType = Math.floor(Math.random() * PlanetTypeData.length);
-        let randomResourceNumber = Math.floor(Math.random() * PlanetTypeData[randomType]['resources'].length);
-        let resourceName = PlanetTypeData[randomType]['resources'][randomResourceNumber];
+        // let randomType = Math.floor(Math.random() * PlanetTypeData.length);
+        // console.log("planet type: " + PlanetData[CurrentPlanet]['type']);
+        // console.log(CurrentPlanet);
+        // console.log(PlanetData[CurrentPlanet]);
+
+        let planet = this.getJSONByName(PlanetData, 'name','Earth');
+        console.log("this is the planet: " + planet);
+        this.getJSONByName(PlanetTypeData, 'type', planet.type);
+
+        // let resourceName;
+        // Object.entries(PlanetData).map(([key, value]) => {
+        //     if (PlanetData[key]['name'] === CurrentPlanet) {
+        //         console.log("GOT EM");
+        //         Object.entries(PlanetTypeData).map(([key2, value]) => {
+        //             if (PlanetTypeData[key2]['type'] === PlanetData[key]['type']) {
+        //                 console.log("GOT EM");
+        //                 let randomResourceNumber = Math.floor(Math.random() * PlanetTypeData[key2]['resources'].length);
+        //                 resourceName = PlanetTypeData[key]['resources'][randomResourceNumber];
+        //             }
+        //         });
+        //     }
+        // });
+
+        // for (let i in PlanetData) {
+        //     console.log(CurrentPlanet);
+        //     if (PlanetData[i].name === CurrentPlanet) {
+        //         console.log("planet data: " + PlanetData[i]);
+        //         for (let j in PlanetTypeData) {
+        //             if (PlanetData[i].type === PlanetTypeData[PlanetData[i].name][type]) {
+        //                 let randomResourceNumber = Math.floor(Math.random() * PlanetTypeData[j]['resources'].length);
+        //                 resourceName = PlanetTypeData[j]['resources'][randomResourceNumber];
+        //             }
+        //         }
+        //     }
+        // }
 
         // Check if inventory contains that resource
         console.log(`Found ${resourceName}`);
@@ -76,6 +118,15 @@ class MainScene extends Phaser.Scene {
             prettyInventoryText += `${Inventory[key]['name']} - x${Inventory[key]['qty']}\n`;
         });
         this.InventoryText = this.InventoryText.setText(prettyInventoryText);
+    }
+
+    getJSONByName(array, keyName, name) {
+        Object.entries(array).map(([key, value]) => {
+            if (array[key][keyName] === name) {
+                console.log(array[key]);
+                return array[key];
+            }
+        });
     }
 
     update() {
