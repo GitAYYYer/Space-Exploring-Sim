@@ -12,18 +12,18 @@ class MainScene extends Phaser.Scene {
 
         let i = 0;
         for (const planet of OrbitingPlanets) {
-            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, this.game.config.height  * 0.1 + i, planet, {fill: '#0f0'}, () => this.planetSelected(planet));
+            this.incrementButton = new TextButton(this, this.game.config.width * 0.6, this.game.config.height * 0.1 + i, planet, {fill: '#0f0'}, () => this.planetSelected(planet));
             this.add.existing(this.incrementButton);
             i += 15;
         }
 
-        this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height  * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
+        this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
 
-        this.currentPlanetText = this.add.text( this.game.config.width * .3, this.game.config.height  * 0.1, "CurrentPlanet");
+        this.currentPlanetText = this.add.text(this.game.config.width * .3, this.game.config.height * 0.1, "CurrentPlanet");
         this.add.existing(this.gatherResourceButton);
 
-        this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height  * 0.1, Inventory);
+        this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.1, Inventory);
 
         this.currentPlanetText = this.currentPlanetText.setText('Earth');
     }
@@ -31,14 +31,10 @@ class MainScene extends Phaser.Scene {
     initialiseSolarSystem() {
         //setting this solar system to milky way
         CurrentSolarSystemName = 'Milky Way';
-        for (var value of SolarSystemData) {
-            if (CurrentSolarSystemName === value.name) {
-                Object.entries(value.planets).map(([key, value]) => {
-                    OrbitingPlanets.push(value);
-                });
-            }
-        }
-
+        console.log(SolarSystemData);
+        Object.entries(SolarSystemData[CurrentSolarSystemName].planets).map(([key, value]) => {
+            OrbitingPlanets.push(value);
+        });
         CurrentPlanet = PlanetData['Earth'];
     }
 
@@ -80,7 +76,7 @@ class MainScene extends Phaser.Scene {
         });
         this.InventoryText = this.InventoryText.setText(prettyInventoryText);
     }
-    
+
     update() {
     }
 }
