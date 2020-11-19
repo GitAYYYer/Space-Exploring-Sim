@@ -5,6 +5,8 @@ class MainScene extends Phaser.Scene {
 
     preload() {
         this.load.image('button', 'assets/button.png');
+        this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
+        this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
     }
 
     create() {
@@ -26,6 +28,13 @@ class MainScene extends Phaser.Scene {
         this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.1, Inventory);
 
         this.currentPlanetText = this.currentPlanetText.setText('Earth');
+
+        textbox = new Textbox(this, this.game.config.width / 3, this.game.config.height / 2, {
+            wrapWidth: 500,
+            fixedWidth: 500,
+            fixedHeight: 65,
+        });
+        textbox.start(content, 50);
     }
 
     initialiseSolarSystem() {
@@ -45,6 +54,9 @@ class MainScene extends Phaser.Scene {
     }
 
     async gatherResource() {
+        content = 'stop mining my shit you cunt fuck off bitch did i say you could mine me like that no fuck off go to a different planet this is bullshit you dont deserve to mine here go suckle someone elses resources you shit cunt fuck you stupid think about what youve done';
+        textbox.start(content, 50);
+
         let planet = CurrentPlanet;
 
         let resourceName;
@@ -80,3 +92,6 @@ class MainScene extends Phaser.Scene {
     update() {
     }
 }
+
+var content = 'cunt';
+var textbox;
