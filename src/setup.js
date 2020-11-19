@@ -18,13 +18,5 @@ var config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     }
-    // ,
-    // plugins: {
-    //     scene: [{
-    //         key: 'rexUI',
-    //         plugin: UIPlugin,
-    //         mapping: 'rexUI'
-    //     }]
-    // }
 };
 var game = new Phaser.Game(config);
