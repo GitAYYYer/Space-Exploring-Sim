@@ -19,19 +19,32 @@ const PlanetTypeData = {
     Gaseous: {
         resources: ['Hydrogen', 'Helium']  
     }
-}
+};
 
-const ShipUpgradeData = [
-    {'name': 'Warp Range',      'dependencies': []               },
-    {'name': 'Shields',         'dependencies': []               },
-    {'name': 'Speed 1',         'dependencies': []               },
-    {'name': 'Speed 2',         'dependencies': ['Speed 1']      }
-];
+const ShipUpgradeData = {
+    'Warp Range': {
+        name: 'Warp Range',
+        dependencies: [],
+        maxLevel: 1
+    },
+    'Shields': {
+        name: 'Shields',
+        dependencies: [],
+        maxLevel: 5
+    },
+    'Speed 1': {
+        name: 'Speed 1',
+        dependencies: [],
+        maxLevel: 5
+    }
+};
 
 //to be auto generated through seeding
-const SolarSystemData = [
-    {'name': 'Milky Way',       'planets': ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']               }
-];
+const SolarSystemData = {
+    'Milky Way' : {
+        planets : ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto']
+    }
+};
 
 const PlanetData = {
     'Mercury': {
@@ -70,4 +83,4 @@ const PlanetData = {
         name: 'Pluto',
         type: 'Frozen'
     }
-}
+};

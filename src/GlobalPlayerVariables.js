@@ -1,6 +1,6 @@
 var CurrentSolarSystemName;
 var OrbitingPlanets = [];
-var CurrentPlanet; //Name, Type
+var CurrentPlanet;
 var Inventory = [];
 var CenterX;
 var CenterY;
