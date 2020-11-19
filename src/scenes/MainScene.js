@@ -1,6 +1,6 @@
 class MainScene extends Phaser.Scene {
     constructor() {
-        super({key: "mainScene"});
+        super({key: "MainScene"});
     }
 
     preload() {
@@ -26,6 +26,14 @@ class MainScene extends Phaser.Scene {
         this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.1, Inventory);
 
         this.currentPlanetText = this.currentPlanetText.setText('Earth');
+
+        // Button to transition to skill tree scene
+        this.skillTreeButton = new TextButton(this, this.game.config.width * .1, 400, 'Open Skill Tree', {fill: '#0f0'}, () => this.openSkillTree());
+        this.add.existing(this.skillTreeButton);
+    }
+
+    openSkillTree() {
+        this.scene.start('SkillTreeScene');
     }
 
     initialiseSolarSystem() {
@@ -44,7 +52,7 @@ class MainScene extends Phaser.Scene {
         this.currentPlanetText = this.currentPlanetText.setText(planetName);
     }
 
-    async gatherResource() {
+    gatherResource() {
         let planet = CurrentPlanet;
 
         let resourceName;

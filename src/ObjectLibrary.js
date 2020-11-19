@@ -24,7 +24,7 @@ const PlanetTypeData = {
 const ShipUpgradeData = {
     'Warp Range': {
         name: 'Warp Range',
-        dependencies: [],
+        dependencies: ['Speed 1'],
         maxLevel: 1
     },
     'Shields': {
@@ -34,7 +34,12 @@ const ShipUpgradeData = {
     },
     'Speed 1': {
         name: 'Speed 1',
-        dependencies: [],
+        dependencies: ['Shields'],
+        maxLevel: 5
+    },
+    'Guns': {
+        name: 'Guns',
+        dependencies: ['Speed 1'],
         maxLevel: 5
     }
 };
