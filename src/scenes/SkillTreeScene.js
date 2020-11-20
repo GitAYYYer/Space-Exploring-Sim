@@ -17,14 +17,16 @@ class SkillTreeScene extends Phaser.Scene {
     create() {
         // Loop through ShipUpgradeData, for each key make it a node, and connect the node to relevant dependencies.
         // Upgrades will be used as nodes in cytoscape.
-        let upgrades = [];
+        let upgrades = {};
+        let nodes = [];
+        let edges = [];
         Object.entries(ShipUpgradeData).map(([outerKey, outerValue]) => {
             // First, create the node and add it to upgrades.
             let node = {};
             node.data = {
                 id: `${outerKey}`
             };
-            upgrades.push(node);
+            nodes.push(node)
 
             // Next, for each dependency, create a new object. It's an array, so you just have the index.
             // Note*: Need better id's. Id is upgrade + upgrade, so it'll be e.g. 'Warp Range + Speed 1'.
@@ -36,10 +38,13 @@ class SkillTreeScene extends Phaser.Scene {
                     target: `${outerKey}`
                 }
                 
-                upgrades.push(dependencyEdge);
+                edges.push(dependencyEdge);
             });
         });
+        upgrades.nodes = nodes;
+        upgrades.edges = edges;
 
+        console.log(JSON.stringify(upgrades, null, 2));
 
         var cy = cytoscape({
             container: document.getElementById("htmlDiv"),
@@ -76,20 +81,47 @@ class SkillTreeScene extends Phaser.Scene {
         cy.autolock(true);
         cy.zoom({ level: 1.0, renderedPosition: { x: 0, y: 0 } });
         cy.on('click', 'node', function(e) {
-            console.log(`this.id(): ${this.id()}`);
-            console.log(`e.target.predecessors().edges(): ${e.target.predecessors().edges()}`)
-            e.target.predecessors().edges().animate({
-                style: {
-                  lineColor: "red"
+            let dependencyNodes = e.target.predecessors().nodes().map(node => node.data().id);
+
+            // For each dependency node, check if player has the upgrade in their 'ShipPlayerUpgrades' map. If not, then it'll be undefined and do not buy upgrade.
+            let dependenciesMet = true;
+            Object.keys(dependencyNodes).map(nodeIndex => {
+                let upgradeData = ShipPlayerUpgrades[dependencyNodes[nodeIndex]];
+
+                // For now, meeting the dependency means to just have the upgrade unlocked (in future maybe need a specific level?)
+                if (upgradeData === undefined) {
+                    dependenciesMet = false;
                 }
             });
-            e.target.style({
-                'background-color': 'lime'
-            });
-        })
+
+            if (dependenciesMet) {
+                ShipPlayerUpgrades[this.id()] = {
+                    currentLevel: 1
+                };
+                e.target.predecessors().edges().animate({
+                    style: {
+                      lineColor: "red"
+                    }
+                });
+                e.target.style({
+                    'background-color': 'lime'
+                });
+            } else {
+                console.log("Please buy the previous upgrades.");
+            }
+        });
+
+        // Object.entries(cy.elements('target = ["Speed 1"]')).map(([key, value]) => {
+        //     console.log(value);
+        // });
     }
 
     update() {
+        
+    }
+
+    // Function to check that before purchasing an upgrade, you have bought the prereqs necessary.
+    checkDependencies(upgradeId) {
         
     }
 }

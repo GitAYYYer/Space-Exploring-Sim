@@ -4,3 +4,6 @@ var CurrentPlanet;
 var Inventory = [];
 var CenterX;
 var CenterY;
+var ShipPlayerUpgrades = {
+    
+};
