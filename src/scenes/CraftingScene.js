@@ -1,10 +1,11 @@
-let scene;
+class CraftingScene extends Phaser.Scene {
 
-class Crafting {
+    constructor() {
+        super({key:'CraftingScene'});
+    }
 
-    constructor(scene) {
-        this.scene = scene;
-        this.displayRecipes(scene);
+    create() {
+        this.displayRecipes();
     }
 
     isCraftable(item) {
@@ -30,11 +31,11 @@ class Crafting {
                 Inventory.set(resource[0], parseInt(Inventory.get(resource[0]) - resource[1]));
             }
             console.log('made a ' + item + '!');
-            this.updateInventoryUI();
+            this.scene.get('InventoryScene').updateInventoryUI();
         }
     }
 
-    displayRecipes(scene) {
+    displayRecipes() {
         let recipes = [];
         Object.entries(CraftingRecipes).map(([key, value]) => {
             recipes.push(key);
@@ -43,19 +44,11 @@ class Crafting {
         let i = 0;
         for (const recipe of recipes) {
             console.log(recipe);
-            scene.craftingTitle = scene.add.text(scene.game.config.width * .45, scene.game.config.height * 0.08, "Crafting");
-            scene.craftingButton = new TextButton(scene, scene.game.config.width * 0.45, scene.game.config.height * 0.1 + i, recipe, {fill: '#0f0'}, () => this.craft(recipe));
-            scene.add.existing(scene.craftingButton);
+            this.craftingTitle = this.add.text(this.game.config.width * .45, this.game.config.height * 0.08, "Crafting");
+            this.craftingButton = new TextButton(this, this.game.config.width * 0.45, this.game.config.height * 0.1 + i, recipe, {fill: '#0f0'}, () => this.craft(recipe));
+            this.add.existing(this.craftingButton);
             i += 15;
         }
     }
 
-    updateInventoryUI() {
-        let prettyInventoryText = "";
-        Inventory.forEach((values, keys) => {
-            prettyInventoryText += values + "x " + keys + '\n';
-        });
-
-        this.scene.InventoryText = this.scene.InventoryText.setText(prettyInventoryText);
-    }
 }

@@ -29,5 +29,12 @@ class InventoryScene extends Phaser.Scene {
         this.InventoryText = this.InventoryText.setText(prettyInventoryText);
     }
 
+    updateInventoryUI() {
+        let prettyInventoryText = "";
+        Inventory.forEach((values, keys) => {
+            prettyInventoryText += values + "x " + keys + '\n';
+        });
 
+        this.InventoryText = this.InventoryText.setText(prettyInventoryText);
+    }
 }

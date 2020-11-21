@@ -1,6 +1,5 @@
 var content = 'cunt';
 var textbox;
-var crafting;
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -15,7 +14,6 @@ class MainScene extends Phaser.Scene {
 
     create() {
         this.initialiseSolarSystem();
-        crafting = new Crafting(this);
 
         this.travelPlanetTitleText = this.add.text(this.game.config.width * .6, this.game.config.height * 0.08, 'Travel');
         let i = 0;
@@ -26,6 +24,7 @@ class MainScene extends Phaser.Scene {
         }
 
         this.createWindow(InventoryScene);
+        this.createWindow(CraftingScene);
 
         this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
