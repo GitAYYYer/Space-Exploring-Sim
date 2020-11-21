@@ -25,6 +25,7 @@ class MainScene extends Phaser.Scene {
             i += 15;
         }
 
+        this.createWindow(InventoryScene);
 
         this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
@@ -32,9 +33,6 @@ class MainScene extends Phaser.Scene {
         this.currentPlanetTitleText = this.add.text(this.game.config.width * .3, this.game.config.height * 0.08, 'Current Planet');
         this.currentPlanetText = this.add.text(this.game.config.width * .3, this.game.config.height * 0.1, "CurrentPlanet");
         // this.add.existing(this.gatherResourceButton);
-
-        this.InventoryTitleText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.08, 'Inventory');
-        this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.1, Inventory);
 
         this.currentPlanetText = this.currentPlanetText.setText('Earth');
 
@@ -87,22 +85,17 @@ class MainScene extends Phaser.Scene {
             }
         });
 
-        // Check if inventory contains that resource
-        if (Inventory.has(resourceName)) {
-            Inventory.set(resourceName,Inventory.get(resourceName) + 1);
-        } else {
-            Inventory.set(resourceName, 1);
-        }
-
-        //Inventory UI
-        let prettyInventoryText = "";
-        Inventory.forEach((values, keys) => {
-            prettyInventoryText += values + "x " + keys + '\n';
-        });
-
-        this.InventoryText = this.InventoryText.setText(prettyInventoryText);
+        this.scene.get('InventoryScene').putInInventory(resourceName);
     }
 
     update() {
+    }
+
+    createWindow (func)
+    {
+        let handle = 'window' + this.count++;
+        let win = this.add.zone(0,0, func.WIDTH, func.HEIGHT);
+        let demo = new func(handle, win);
+        this.scene.add(handle, demo, true);
     }
 }
