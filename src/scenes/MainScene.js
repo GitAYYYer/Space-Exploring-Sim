@@ -1,5 +1,4 @@
-var content = 'cunt';
-var textbox;
+let textbox;
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -26,6 +25,8 @@ class MainScene extends Phaser.Scene {
         this.createWindow(InventoryScene);
         this.createWindow(CraftingScene);
 
+        this.planetAscii = this.add.text(this.game.config.width / 2.7, this.game.config.height / 1.5, fancyPlanet);
+
         this.gatherResourceButton = new TextButton(this, this.game.config.width * .1, this.game.config.height * 0.1, 'Gather Resource', {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
 
@@ -40,7 +41,7 @@ class MainScene extends Phaser.Scene {
             fixedWidth: 500,
             fixedHeight: 65,
         });
-        textbox.start(content, 50);
+        this.textboxWrite('cunt');
 
         // Button to transition to skill tree scene
         this.skillTreeButton = new TextButton(this, this.game.config.width * .1, 400, 'Open Skill Tree', {fill: '#0f0'}, () => this.openSkillTree());
@@ -49,6 +50,10 @@ class MainScene extends Phaser.Scene {
 
     openSkillTree() {
         this.scene.start('SkillTreeScene');
+    }
+
+    textboxWrite(content) {
+        textbox.start(content, 20);
     }
 
     initialiseSolarSystem() {
@@ -62,14 +67,33 @@ class MainScene extends Phaser.Scene {
     }
 
     planetSelected(planetName) {
-        CurrentPlanet = PlanetData[planetName];
+        let canTravel = false;
+        if (PlanetData[planetName].type === 'Fiery') {
+            if (FrostResist < 1) {
+                this.textboxWrite('Your ship cannot resist temperatures this hot fucking idiot');
+            } else {
+                canTravel = true;
+            }
+        } else if (PlanetData[planetName].type === 'Frozen') {
+            if (HeatResist < 1) {
+                this.textboxWrite('Your ship cannot resist temperatures this cold fucking idiot');
+            } else {
+                canTravel = true;
+            }
+        } else {
+            canTravel = true;
+        }
 
-        this.currentPlanetText = this.currentPlanetText.setText(planetName);
+        if (canTravel) {
+            CurrentPlanet = PlanetData[planetName];
+            this.currentPlanetText = this.currentPlanetText.setText(planetName);
+            textbox.start('You have travelled to ' + planetName);
+        }
     }
 
     gatherResource() {
-        content = 'stop mining my shit you cunt fuck off bitch did i say you could mine me like that no fuck off go to a different planet this is bullshit you dont deserve to mine here go suckle someone elses resources you shit cunt fuck you stupid think about what youve done';
-        textbox.start(content, 50);
+        let content = 'stop mining my shit you cunt fuck off bitch did i say you could mine me like that no fuck off go to a different planet this is bullshit you dont deserve to mine here go suckle someone elses resources you shit cunt fuck you stupid think about what youve done';
+        this.textboxWrite(content);
 
         let resourceName = '';
 
@@ -98,3 +122,26 @@ class MainScene extends Phaser.Scene {
         this.scene.add(handle, demo, true);
     }
 }
+
+let fancyPlanet =
+    '                   ooo OOO OOO ooo\n' +
+    '               oOO                 OOo\n' +
+    '           oOO                         OOo\n' +
+    '        oOO                               OOo\n' +
+    '      oOO                                   OOo\n' +
+    '    oOO                                       OOo\n' +
+    '   oOO                                         OOo\n' +
+    '  oOO                                           OOo\n' +
+    ' oOO                                             OOo\n' +
+    ' oOO                                             OOo\n' +
+    ' oOO           pretend this is a planet          OOo\n' +
+    ' oOO                 very cool                   OOo\n' +
+    ' oOO                                             OOo\n' +
+    '  oOO                                           OOo\n' +
+    '   oOO                                         OOo\n' +
+    '    oOO                                       OOo\n' +
+    '      oOO                                   OOo\n' +
+    '        oO                                OOo\n' +
+    '           oOO                         OOo\n' +
+    '               oOO                 OOo\n' +
+    '                   ooo OOO OOO ooo'

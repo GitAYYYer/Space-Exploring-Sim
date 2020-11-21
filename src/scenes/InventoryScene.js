@@ -1,6 +1,6 @@
 class InventoryScene extends Phaser.Scene {
     constructor() {
-        super({key:'InventoryScene'});
+        super({key: 'InventoryScene'});
     }
 
     preload() {
@@ -15,18 +15,12 @@ class InventoryScene extends Phaser.Scene {
     putInInventory(resourceName) {
         // Check if inventory contains that resource
         if (Inventory.has(resourceName)) {
-            Inventory.set(resourceName,Inventory.get(resourceName) + 1);
+            Inventory.set(resourceName, Inventory.get(resourceName) + 1);
         } else {
             Inventory.set(resourceName, 1);
         }
 
-        //Inventory UI
-        let prettyInventoryText = "";
-        Inventory.forEach((values, keys) => {
-            prettyInventoryText += values + "x " + keys + '\n';
-        });
-
-        this.InventoryText = this.InventoryText.setText(prettyInventoryText);
+        this.updateInventoryUI();
     }
 
     updateInventoryUI() {

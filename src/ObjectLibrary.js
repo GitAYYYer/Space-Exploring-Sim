@@ -55,25 +55,49 @@ const PlanetTypeData = {
 };
 
 const ShipUpgradeData = {
-    'Warp Range': {
-        name: 'Warp Range',
-        dependencies: ['Speed 1'],
-        maxLevel: 1
+    'Proper Ship': {
+        name: 'Proper Ship',
+        dependencies: [],
+        maxLevel: 1,
+        desc: 'A proper ship made of metal, not wood and duct tape.',
+        cost: [['Iron', 50]]
+    },
+    'Warp Drive': {
+        name: 'Warp Drive',
+        dependencies: ['Proper Ship'],
+        maxLevel: 1,
+        desc: '',
+        cost: [['Iron', 50]]
     },
     'Shields': {
         name: 'Shields',
-        dependencies: [],
-        maxLevel: 5
+        dependencies: ['Proper Ship'],
+        maxLevel: 5,
+        cost: [['Iron', 50]]
     },
-    'Speed 1': {
-        name: 'Speed 1',
-        dependencies: ['Shields'],
-        maxLevel: 5
+    'Warp Range': {
+        name: 'Warp Range',
+        dependencies: ['Warp Drive'],
+        maxLevel: 5,
+        cost: [['Iron', 50]]
     },
     'Guns': {
         name: 'Guns',
-        dependencies: ['Speed 1'],
-        maxLevel: 5
+        dependencies: ['Proper Ship'],
+        maxLevel: 5,
+        cost: [['Iron', 50]]
+    },
+    'Heat Resistance': {
+        name: 'Heat Resistance',
+        dependencies: ['Proper Ship'],
+        maxLevel: 1,
+        cost: [['Iron', 50]]
+    },
+    'Frost Resistance': {
+        name: 'Frost Resistance',
+        dependencies: ['Proper Ship'],
+        maxLevel: 1,
+        cost: [['Iron', 50]]
     }
 };
 
@@ -124,7 +148,13 @@ const PlanetData = {
 };
 
 CraftingRecipes = {
-    'Pickaxe': {
-        requirement: [['Iron', 3], ['Wood', 2]]
+    '1/8th figure of Hayasaka': {
+        requirement: [['Diamond', 1]]
+    },
+    'Charcoal': {
+        requirement: [['Wood', 2]]
+    },
+    'Steel': {
+        requirement: [['Iron', 3], ['Charcoal', 1]]
     }
 };

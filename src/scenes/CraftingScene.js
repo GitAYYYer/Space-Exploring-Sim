@@ -31,7 +31,11 @@ class CraftingScene extends Phaser.Scene {
                 Inventory.set(resource[0], parseInt(Inventory.get(resource[0]) - resource[1]));
             }
             console.log('made a ' + item + '!');
+            this.scene.get('MainScene').textboxWrite('You made a ' + item);
             this.scene.get('InventoryScene').updateInventoryUI();
+            this.scene.get('InventoryScene').putInInventory(item);
+        } else {
+            this.scene.get('MainScene').textboxWrite('Can\'t afford this idiot');
         }
     }
 
