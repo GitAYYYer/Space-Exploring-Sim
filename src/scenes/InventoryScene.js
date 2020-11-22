@@ -3,24 +3,15 @@ class InventoryScene extends Phaser.Scene {
         super({key: 'InventoryScene'});
     }
 
-    preload() {
-
-    }
-
     create() {
+        this.emitter = EventDispatcher.getInstance();
+        this.setListeners();
         this.InventoryTitleText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.08, 'Inventory');
         this.InventoryText = this.add.text(this.game.config.width * .75, this.game.config.height * 0.1, Inventory);
     }
 
-    putInInventory(resourceName) {
-        // Check if inventory contains that resource
-        if (Inventory.has(resourceName)) {
-            Inventory.set(resourceName, Inventory.get(resourceName) + 1);
-        } else {
-            Inventory.set(resourceName, 1);
-        }
-
-        this.updateInventoryUI();
+    setListeners() {
+        this.emitter.on('updateInventoryUI', this.updateInventoryUI.bind(this));
     }
 
     removeFromInventory(resourceName, amount) {

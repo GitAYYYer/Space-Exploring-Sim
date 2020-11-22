@@ -11,12 +11,19 @@ class MainScene extends Phaser.Scene {
         this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
 
         this.loadLocalStorageData();
+        //temp, this should be load in from save or only run if no save is detected
+        this.initialiseSolarSystem();
     }
 
     create() {
-        this.initialiseSolarSystem();
+        this.emitter = EventDispatcher.getInstance();
+        this.setListeners();
 
         this.travelPlanetTitleText = this.add.text(this.game.config.width * .6, this.game.config.height * 0.08, 'Travel');
+
+        if (this.incrementButton !== undefined) {
+            this.incrementButton.destroy();
+        }
         let i = 0;
         for (const planet of OrbitingPlanets) {
             this.incrementButton = new TextButton(this, this.game.config.width * 0.6, this.game.config.height * 0.1 + i, planet, {fill: '#0f0'}, () => this.planetSelected(planet));
@@ -43,18 +50,22 @@ class MainScene extends Phaser.Scene {
             fixedWidth: 500,
             fixedHeight: 65,
         });
-        this.textboxWrite('cunt');
+        this.textBoxWrite('cunt');
 
         // Button to transition to skill tree scene
         this.skillTreeButton = new TextButton(this, this.game.config.width * .1, 400, 'Open Skill Tree', {fill: '#0f0'}, () => this.openSkillTree());
         this.add.existing(this.skillTreeButton);
     }
 
+    setListeners() {
+        this.emitter.on('writeToTextBox', this.textBoxWrite.bind(this));
+    }
+
     openSkillTree() {
         this.scene.start('SkillTreeScene');
     }
 
-    textboxWrite(content) {
+    textBoxWrite(content) {
         textbox.start(content, 20);
     }
 
@@ -72,13 +83,13 @@ class MainScene extends Phaser.Scene {
         let canTravel = false;
         if (PlanetData[planetName].type === 'Fiery') {
             if (FrostResist < 1) {
-                this.textboxWrite('Your ship cannot resist temperatures this hot fucking idiot');
+                this.textBoxWrite('Your ship cannot resist temperatures this hot fucking idiot');
             } else {
                 canTravel = true;
             }
         } else if (PlanetData[planetName].type === 'Frozen') {
             if (HeatResist < 1) {
-                this.textboxWrite('Your ship cannot resist temperatures this cold fucking idiot');
+                this.textBoxWrite('Your ship cannot resist temperatures this cold fucking idiot');
             } else {
                 canTravel = true;
             }
@@ -95,7 +106,7 @@ class MainScene extends Phaser.Scene {
 
     gatherResource() {
         let content = 'stop mining my shit you cunt fuck off bitch did i say you could mine me like that no fuck off go to a different planet this is bullshit you dont deserve to mine here go suckle someone elses resources you shit cunt fuck you stupid think about what youve done';
-        this.textboxWrite(content);
+        this.textBoxWrite(content);
 
         let resourceName = '';
 
@@ -110,9 +121,11 @@ class MainScene extends Phaser.Scene {
             }
         });
 
+        //debug
         for (let i = 0; i < 50; i++) {
             this.scene.get('InventoryScene').putInInventory(resourceName);
         }
+        PutInInventory(resourceName);
     }
 
     update() {
