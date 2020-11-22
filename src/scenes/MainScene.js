@@ -10,6 +10,7 @@ class MainScene extends Phaser.Scene {
         this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
         this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
 
+        this.loadLocalStorageData();
         //temp, this should be load in from save or only run if no save is detected
         this.initialiseSolarSystem();
     }
@@ -120,6 +121,10 @@ class MainScene extends Phaser.Scene {
             }
         });
 
+        //debug
+        for (let i = 0; i < 50; i++) {
+            this.scene.get('InventoryScene').putInInventory(resourceName);
+        }
         PutInInventory(resourceName);
     }
 
@@ -132,6 +137,33 @@ class MainScene extends Phaser.Scene {
         let win = this.add.zone(0,0, func.WIDTH, func.HEIGHT);
         let demo = new func(handle, win);
         this.scene.add(handle, demo, true);
+    }
+
+    loadLocalStorageData() {
+        localStorage.setItem('PlayerData', JSON.stringify({
+            PlayerData: {
+                ShipPlayerUpgrades: {
+                    'Proper Ship': {
+                        currentLevel: 1
+                    },
+                    'Guns': {
+                        currentLevel: 1
+                    }
+                },
+                Fishing: {
+                    currentLevel: 1
+                }
+            }
+        }));
+        let localStorageData = JSON.parse(localStorage.getItem('PlayerData'));
+        // let localStorageData = JSON.parse(localStorage.getItem('PlayerData'));
+        
+        // localStorageData is only 1 key, but you loop over the many keys that are in PlayerData.
+        Object.entries(localStorageData['PlayerData']).map(([dataKey, dataValue]) => {
+            if (dataKey === 'ShipPlayerUpgrades') {
+                ShipPlayerUpgrades = localStorageData['PlayerData'][dataKey];
+            }
+        });
     }
 }
 

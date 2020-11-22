@@ -20,6 +20,7 @@
     "browserify": "^17.0.0",
     "cytoscape": "^3.17.0",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "phaser": "^3.24.1",
     "random-seed": "^0.3.0"
   }

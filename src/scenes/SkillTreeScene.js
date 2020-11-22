@@ -47,8 +47,6 @@ class SkillTreeScene extends Phaser.Scene {
         upgrades.nodes = nodes;
         upgrades.edges = edges;
 
-        console.log(JSON.stringify(upgrades, null, 2));
-
         var cy = cytoscape({
             container: document.getElementById("htmlDiv"),
 
@@ -81,9 +79,11 @@ class SkillTreeScene extends Phaser.Scene {
         });
 
         // Properties for the cy graph.
+        cy.nodes().each((ele, i, eles) => this.nodeAlreadyUpgraded(ele, i, eles));
+        cy.edges().each((ele, i, eles) => this.edgeAlreadyUpgraded(ele, i, eles));
         cy.autolock(true);
         cy.zoom({ level: 1.0, renderedPosition: { x: 0, y: 0 } });
-        cy.on('click', 'node', e => this.checkDependencies(e));
+        cy.on('click', 'node', e => this.buyUpgrade(e));
     }
 
     update() {
@@ -95,8 +95,21 @@ class SkillTreeScene extends Phaser.Scene {
         this.scene.resume('MainScene');
     }
 
+    nodeAlreadyUpgraded(ele, i, eles) {
+        ele.style('background-color', ShipPlayerUpgrades[ele.data().id] === undefined ? '#666' : 'lime');
+    }
+
+    edgeAlreadyUpgraded(ele, i, eles) {
+        if (ShipPlayerUpgrades[ele.data().source] !== undefined && ShipPlayerUpgrades[ele.data().target] !== undefined) {
+            ele.style('line-color', 'red');
+            ele.style('target-arrow-color', 'red');
+        } else {
+            ele.style('line-color', '#ccc');
+        }
+    }
+
     // Function to check that before purchasing an upgrade, you have bought the prereqs necessary.
-    checkDependencies(e) {
+    buyUpgrade(e) {
         let dependencyNodes = e.target.predecessors().nodes().map(node => node.data().id);
 
         // For each dependency node, check if player can afford to buy the upgrade.
@@ -110,17 +123,26 @@ class SkillTreeScene extends Phaser.Scene {
         });
 
         if (dependenciesMet) {
+            this.removeResourcesFromInventory(e.target.id());
             ShipPlayerUpgrades[e.target.id()] = {
                 currentLevel: 1
             };
+
             e.target.predecessors().edges().animate({
                 style: {
-                    lineColor: "red"
+                    lineColor: "red",
+                    'target-arrow-color': 'red'
                 }
             });
             e.target.style({
                 'background-color': 'lime'
             });
+
+
+            let localStorageData = JSON.parse(localStorage.getItem('PlayerData'));
+            localStorageData.PlayerData.ShipPlayerUpgrades = ShipPlayerUpgrades;
+            localStorage.setItem('PlayerData', JSON.stringify(localStorageData));
+
         } else {
             console.log("Please buy the previous upgrades.");
         }
@@ -138,5 +160,12 @@ class SkillTreeScene extends Phaser.Scene {
             }
         }
         return true;
+    }
+
+    // Called at end of buyUpgrades, remove all resources equal to cost needed.
+    removeResourcesFromInventory(upgradeName) {
+        for (const resource of ShipUpgradeData[upgradeName].cost) {
+            this.scene.get('InventoryScene').removeFromInventory(resource[0], resource[1]);
+        }
     }
 }

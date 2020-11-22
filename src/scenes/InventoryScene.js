@@ -14,6 +14,11 @@ class InventoryScene extends Phaser.Scene {
         this.emitter.on('updateInventoryUI', this.updateInventoryUI.bind(this));
     }
 
+    removeFromInventory(resourceName, amount) {
+        Inventory.set(resourceName, Inventory.get(resourceName) - amount);
+        this.updateInventoryUI();
+    }
+
     updateInventoryUI() {
         let prettyInventoryText = "";
         Inventory.forEach((values, keys) => {
