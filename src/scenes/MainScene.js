@@ -123,7 +123,7 @@ class MainScene extends Phaser.Scene {
 
         //debug
         for (let i = 0; i < 50; i++) {
-            this.scene.get('InventoryScene').putInInventory(resourceName);
+            PutInInventory(resourceName);
         }
         PutInInventory(resourceName);
     }
