@@ -15,6 +15,9 @@ class SkillTreeScene extends Phaser.Scene {
     }
 
     create() {
+        this.mainSceneButton = new TextButton(this, this.game.config.width * .15, this.game.config.height * 0.08, 'Back to MainScene', {fill: '#0f0'}, () => this.backToMainScene());
+        this.add.existing(this.mainSceneButton);
+
         // Loop through ShipUpgradeData, for each key make it a node, and connect the node to relevant dependencies.
         // Upgrades will be used as nodes in cytoscape.
         let upgrades = {};
@@ -80,48 +83,60 @@ class SkillTreeScene extends Phaser.Scene {
         // Properties for the cy graph.
         cy.autolock(true);
         cy.zoom({ level: 1.0, renderedPosition: { x: 0, y: 0 } });
-        cy.on('click', 'node', function(e) {
-            let dependencyNodes = e.target.predecessors().nodes().map(node => node.data().id);
-
-            // For each dependency node, check if player has the upgrade in their 'ShipPlayerUpgrades' map. If not, then it'll be undefined and do not buy upgrade.
-            let dependenciesMet = true;
-            Object.keys(dependencyNodes).map(nodeIndex => {
-                let upgradeData = ShipPlayerUpgrades[dependencyNodes[nodeIndex]];
-
-                // For now, meeting the dependency means to just have the upgrade unlocked (in future maybe need a specific level?)
-                if (upgradeData === undefined) {
-                    dependenciesMet = false;
-                }
-            });
-
-            if (dependenciesMet) {
-                ShipPlayerUpgrades[this.id()] = {
-                    currentLevel: 1
-                };
-                e.target.predecessors().edges().animate({
-                    style: {
-                      lineColor: "red"
-                    }
-                });
-                e.target.style({
-                    'background-color': 'lime'
-                });
-            } else {
-                console.log("Please buy the previous upgrades.");
-            }
-        });
-
-        // Object.entries(cy.elements('target = ["Speed 1"]')).map(([key, value]) => {
-        //     console.log(value);
-        // });
+        cy.on('click', 'node', e => this.checkDependencies(e));
     }
 
     update() {
         
     }
 
+    backToMainScene() {
+        this.scene.remove('SkillTreeScene');
+        this.scene.resume('MainScene');
+    }
+
     // Function to check that before purchasing an upgrade, you have bought the prereqs necessary.
-    checkDependencies(upgradeId) {
-        
+    checkDependencies(e) {
+        let dependencyNodes = e.target.predecessors().nodes().map(node => node.data().id);
+
+        // For each dependency node, check if player can afford to buy the upgrade.
+        let dependenciesMet = true;
+        Object.keys(dependencyNodes).map(nodeIndex => {
+            let upgradeName = dependencyNodes[nodeIndex];
+
+            if (!this.isAffordable(upgradeName)) {
+                dependenciesMet = false;
+            }
+        });
+
+        if (dependenciesMet) {
+            ShipPlayerUpgrades[e.target.id()] = {
+                currentLevel: 1
+            };
+            e.target.predecessors().edges().animate({
+                style: {
+                    lineColor: "red"
+                }
+            });
+            e.target.style({
+                'background-color': 'lime'
+            });
+        } else {
+            console.log("Please buy the previous upgrades.");
+        }
+    }
+
+    isAffordable(upgradeName) {
+        for (const resource of ShipUpgradeData[upgradeName].cost) {
+            if (Inventory.has(resource[0])) {
+                if (Inventory.get(resource[0]) < resource[1]) {
+                    return false;
+                }
+            } else {
+                console.log('Missing ' + resource);
+                return false;
+            }
+        }
+        return true;
     }
 }
