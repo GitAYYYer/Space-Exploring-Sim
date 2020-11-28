@@ -12,7 +12,7 @@ var config = {
     height: window.innerHeight * window.devicePixelRatio,
     // width: 1000,
     // height: 500,
-    scene: [ MainScene, SkillTreeScene ],
+    scene: [ MainScene ],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -1,3 +1,13 @@
+const Config = {
+    SolarSystem : {
+        minPlanets: 3,
+        maxPlanets: 15,
+    },
+    Galaxy : {
+        numberOfSystems: 100,
+    }
+};
+
 //todo: resources are different depending on mining/drill strength? e.g. drill strength of 3 can mine ores of strength 3 or less e.g. ['Diamond', 0.05, 4]
 const ResourceData = {
     'Iron': {

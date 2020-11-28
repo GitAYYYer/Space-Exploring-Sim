@@ -10,12 +10,12 @@ class SkillTreeScene extends Phaser.Scene {
         var div = document.createElement("div");
         div.className = "nodeGraph";
         div.id = "htmlDiv";
-        div.style = `width: ${this.game.config.width * .8}px; height: ${this.game.config.height * .8}px; background-color: white;`;
+        div.style = `width: ${this.game.config.width * .85}px; height: ${this.game.config.height * .85}px; background-color: white;`;
         this.add.dom(this.game.config.width / 2, this.game.config.height / 2, div);
     }
 
     create() {
-        this.mainSceneButton = new TextButton(this, this.game.config.width * .15, this.game.config.height * 0.08, 'Back to MainScene', {fill: '#0f0'}, () => this.backToMainScene());
+        this.mainSceneButton = new TextButton(this, this.game.config.width * .15, this.game.config.height * 0.05, 'Back to MainScene', {fill: '#0f0'}, () => this.backToMainScene());
         this.add.existing(this.mainSceneButton);
 
         // Loop through ShipUpgradeData, for each key make it a node, and connect the node to relevant dependencies.
