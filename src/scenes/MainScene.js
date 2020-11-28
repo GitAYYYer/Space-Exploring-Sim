@@ -19,6 +19,9 @@ class MainScene extends Phaser.Scene {
         this.emitter = EventDispatcher.getInstance();
         this.setListeners();
 
+        this.scene.launch('NavScene');
+        // this.scene.launch('SkillTreeScene');
+
         this.travelPlanetTitleText = this.add.text(this.game.config.width * .6, this.game.config.height * 0.08, 'Travel');
 
         if (this.incrementButton !== undefined) {
@@ -33,6 +36,8 @@ class MainScene extends Phaser.Scene {
 
         this.createWindow(InventoryScene);
         this.createWindow(CraftingScene);
+        console.log(this.game.config.width * 0.2);
+        // this.createWindow(NavScene, this.game.config.width * 0.2);
 
         this.planetAscii = this.add.text(this.game.config.width / 2.7, this.game.config.height / 1.5, fancyPlanet);
 
@@ -135,6 +140,14 @@ class MainScene extends Phaser.Scene {
     {
         let handle = 'window' + this.count++;
         let win = this.add.zone(0,0, func.WIDTH, func.HEIGHT);
+        let demo = new func(handle, win);
+        this.scene.add(handle, demo, true);
+    }
+
+    createWindow (func, width)
+    {
+        let handle = 'window' + this.count++;
+        let win = this.add.zone(0,0, width, func.HEIGHT);
         let demo = new func(handle, win);
         this.scene.add(handle, demo, true);
     }

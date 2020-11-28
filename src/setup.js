@@ -10,9 +10,9 @@ var config = {
     parent: canvasContainer,
     width: window.innerWidth * window.devicePixelRatio,
     height: window.innerHeight * window.devicePixelRatio,
-    // width: 1000,
-    // height: 500,
-    scene: [ MainScene, SkillTreeScene ],
+    navWidth: (window.innerWidth * window.devicePixelRatio) * 0.2,
+    centerWithNav: (window.innerWidth * window.devicePixelRatio) - ((window.innerWidth * window.devicePixelRatio) * 0.2) / 2,
+    scene: [ MainScene, SkillTreeScene, NavScene ],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
