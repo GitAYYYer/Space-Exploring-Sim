@@ -36,6 +36,10 @@ class MainScene extends Phaser.Scene {
         this.skillTreeButton = new TextButton(this, this.game.config.width * .1, 400, 'Open Skill Tree', {fill: '#0f0'}, () => this.openSkillTree());
         this.add.existing(this.skillTreeButton);
 
+        // Button to fish
+        this.fishingButton = new TextButton(this, this.game.config.width * .1, 600, 'Start Fishing', {fill: '#0f0'}, () => this.startFishing());
+        this.add.existing(this.fishingButton);
+
         GenerateGalaxy();
     }
 
@@ -45,6 +49,10 @@ class MainScene extends Phaser.Scene {
 
     openSkillTree() {
         this.createWindow(SkillTreeScene);
+    }
+
+    startFishing() {
+        this.createWindow(FishingScene);
     }
 
     textBoxWrite(content) {
