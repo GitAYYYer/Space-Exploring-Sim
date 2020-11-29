@@ -1,5 +1,6 @@
 var fishReady = false;
 var startTime;
+var fishingDone = false;
 
 class FishingScene extends Phaser.Scene {
     constructor() {
@@ -33,7 +34,8 @@ class FishingScene extends Phaser.Scene {
             frameRate: 1,
             repeat: -1
         });
-        this.add.sprite(this.game.config.width/2, this.game.config.height/2, 'waiting1').play('fullWait');
+        let animation = this.add.sprite(this.game.config.width/2, this.game.config.height/2, 'waiting1').play('fullWait');
+        animation.setInteractive();
 
         // Get random number of seconds for player to wait.
         let timeUntilFish = Math.random() * 5 + 2;
@@ -41,46 +43,56 @@ class FishingScene extends Phaser.Scene {
 
         setTimeout(function() {
             startTime = new Date().getTime();
-            context.add.image(context.game.config.width/2, context.game.config.height/2, 'catch4');
+            let image = context.add.image(context.game.config.width/2, context.game.config.height/2, 'catch4');
+            image.setInteractive();
             fishReady = true;
-            console.log(`Fish Ready at ${startTime}`);
         }, timeUntilFish * 1000);
     }
 
     update() {
-        // if (this.fishReadyImage !== undefined) {
-        //     this.fishReadyImage.setInteractive();
-        //     console.log('happened');
-        //     this.fishReadyImage.on('clicked', this.handleFishClick, this);
-
-        //     this.
-        // }
-        this.input.on('pointerup', (e) => this.handleFishClick(e));
+        this.input.on('gameobjectdown', (e) => this.handleFishClick(e));
     }
 
     backToMainScene() {
-        this.scene.setVisible(true, 'MainScene');
-        this.scene.setActive(true, 'MainScene');
+        fishReady = false;
+        fishingDone = false;
+        this.scene.resume('MainScene');
         this.scene.remove();
     }
 
     handleFishClick(e) {
-        if (fishReady) {
-            let timeClicked = new Date().getTime();
-            let timeTaken = timeClicked - startTime;
-            console.log(`Took you ${timeTaken} milliseconds to click.`);
+        // fishingDone is player click: if player has not clicked yet and fish is ready:
+        if (!fishingDone) {
+            if (fishReady) {
+                let timeClicked = new Date().getTime();
+                let timeTaken = timeClicked - startTime;
+                console.log(`Took you ${timeTaken} milliseconds to click.`);
 
-            if (timeTaken < 600) {
-                console.log('You got the fish in time!');
-                this.add.image(this.game.config.width/2, this.game.config.height/2, 'successCatch');
+                if (timeTaken < 600) {
+                    console.log('You got the fish in time!');
+                    this.add.image(this.game.config.width/2, this.game.config.height/2, 'successCatch');
+                } else {
+                    console.log('Boomer reactions lol');
+                    this.add.image(this.game.config.width/2, this.game.config.height/2, 'failedCatch');
+                }
+                fishingDone = true;
+                PutInInventory('Fish');
+
+            // Else if the player has not clicked yet and fish is not ready
             } else {
-                console.log('Boomer reactions lol');
+                console.log('nice 1');
                 this.add.image(this.game.config.width/2, this.game.config.height/2, 'failedCatch');
+                this.anims.pauseAll();
+                fishingDone = true;
             }
+        }
 
-        } else {
-            console.log('nice 1');
-            this.add.image(this.game.config.width/2, this.game.config.height/2, 'failedCatch');
+        // Finally, when player has clicked (meaning fishing is done).
+        if (fishingDone) {
+            let context = this;
+            setTimeout(function() {
+                context.input.on('pointerdown', () => {context.backToMainScene()});
+            }, 1000);
         }
     }
 }

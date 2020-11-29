@@ -52,8 +52,6 @@ class MainScene extends Phaser.Scene {
     }
 
     startFishing() {
-        this.scene.setActive(false);
-        this.scene.setVisible(false);
         this.createWindow(FishingScene);
     }
 
