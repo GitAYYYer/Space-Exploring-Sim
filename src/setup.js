@@ -1,8 +1,4 @@
 function preload() {
-    // Loads files into the game for use later, does not actually render
-    CenterX = game.config.width/2;
-    CenterY = game.config.height/2;
-    console.log(CenterX + " " + game.config.width/2)
 }
 
 function create() {
@@ -11,12 +7,18 @@ function create() {
 
 var config = {
     type: Phaser.AUTO,
+    parent: canvasContainer,
     width: window.innerWidth * window.devicePixelRatio,
     height: window.innerHeight * window.devicePixelRatio,
+    // width: 1000,
+    // height: 500,
     scene: [ MainScene ],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    dom: {
+        createContainer: true
     }
 };
 var game = new Phaser.Game(config);
