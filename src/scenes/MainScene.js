@@ -1,4 +1,5 @@
 let textbox;
+let emitter;
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -7,8 +8,6 @@ class MainScene extends Phaser.Scene {
 
     preload() {
         this.load.image('button', 'assets/button.png');
-        this.load.scenePlugin('rexuiplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js', 'rexUI', 'rexUI');
-        this.load.image('nextPage', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png');
 
         this.loadLocalStorageData();
         //temp, this should be load in from save or only run if no save is detected
@@ -21,16 +20,17 @@ class MainScene extends Phaser.Scene {
         this.createWindow(InventoryScene);
         this.createWindow(CraftingScene);
         this.createWindow(TravelScene);
+        this.createWindow(CustomTextboxScene);
 
         this.gatherResourceButton = new TextButton(this, this.game.config.width / 2.7, this.game.config.height / 1.5, fancyPlanet, {fill: '#0f0'}, () => this.gatherResource());
         this.add.existing(this.gatherResourceButton);
 
-        textbox = new Textbox(this, this.game.config.width / 3, this.game.config.height / 2, {
-            wrapWidth: 500,
-            fixedWidth: 500,
-            fixedHeight: 65,
-        });
-        this.textBoxWrite('cunt');
+        // textbox = new Textbox(this, this.game.config.width / 3, this.game.config.height / 2, {
+        //     wrapWidth: 500,
+        //     fixedWidth: 500,
+        //     fixedHeight: 65,
+        // });
+        // this.textBoxWrite('cunt');
 
         // Button to transition to skill tree scene
         this.skillTreeButton = new TextButton(this, this.game.config.width * .1, 400, 'Open Skill Tree', {fill: '#0f0'}, () => this.openSkillTree());
@@ -40,20 +40,20 @@ class MainScene extends Phaser.Scene {
     }
 
     setListeners() {
-        this.emitter.on('writeToTextBox', this.textBoxWrite.bind(this));
+        // this.emitter.on('writeToTextBox', this.textBoxWrite.bind(this));
     }
 
     openSkillTree() {
         this.createWindow(SkillTreeScene);
     }
 
-    textBoxWrite(content) {
-        textbox.start(content, 20);
-    }
+    // textBoxWrite(content) {
+    //     textbox.start(content, 20);
+    // }
 
     gatherResource() {
         let content = 'stop mining my shit you cunt fuck off bitch did i say you could mine me like that no fuck off go to a different planet this is bullshit you dont deserve to mine here go suckle someone elses resources you shit cunt fuck you stupid think about what youve done';
-        this.textBoxWrite(content);
+        this.emitter.emit('writeToTextBox', content);
 
         let resourceName = '';
 
